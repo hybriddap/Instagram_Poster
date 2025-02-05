@@ -15,8 +15,8 @@ Steps to get it working:
 6. Enjoy!
 
 Important Notes:
--You must have a developer account with Meta
--You must have a business account on Instagram
--You must have a facebook page linked to that business account (this will help you retrieve your instagram user id)
--You must have an API app running on Meta and it must have the correct permissions
--You must have an account with Imgur & have an API app running with it
+1. You must have a developer account with Meta
+2. You must have a business account on Instagram
+3. You must have a facebook page linked to that business account (this will help you retrieve your instagram user id)
+4. You must have an API app running on Meta and it must have the correct permissions
+5. You must have an account with Imgur & have an API app running with it
