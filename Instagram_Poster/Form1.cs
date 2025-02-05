@@ -27,6 +27,7 @@ namespace Instagram_Poster
             string id = InstagramAPI.uploadPhotoToInstagram(url, textBox1.Text);
             if (id == null) return;
             InstagramAPI.publishPhoto(id);
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -40,6 +41,7 @@ namespace Instagram_Poster
                     fileDir = openFileDialog.FileName;
                 }
             }
+            button1.Enabled = true;
         }
     }
 }

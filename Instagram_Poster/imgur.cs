@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Instagram_Poster
 {
@@ -29,40 +32,45 @@ namespace Instagram_Poster
             return null;
         }
 
+
         private static string postToImgur(string imagFilePath="")
         {
-            byte[] imageData;
+            //Define the argument to pass to the batch file
+            string argument = imagFilePath;
 
-            FileStream fileStream = File.OpenRead(imagFilePath);
-            imageData = new byte[fileStream.Length];
-            fileStream.Read(imageData, 0, imageData.Length);
-            fileStream.Close();
+            //Console.WriteLine(imagFilePath);
 
-            string uploadRequestString = "image=" + Uri.EscapeDataString(System.Convert.ToBase64String(imageData)) + "&key=" + imgurClientId;
+            string exeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string batScriptPath = Path.Combine(exeDirectory, "imgur.bat");
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create("https://api.imgur.com/3/image");
-            webRequest.Method = "POST";
-            webRequest.ContentType = "application/x-www-form-urlencoded";
-            webRequest.ServicePoint.Expect100Continue = false;
+            ProcessStartInfo ProcessInfo;
+            Process process;
 
-            StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
-            streamWriter.Write(uploadRequestString);
-            streamWriter.Close();
+            ProcessInfo = new ProcessStartInfo(batScriptPath, argument);
+            ProcessInfo.CreateNoWindow = true;
+            ProcessInfo.UseShellExecute = false;
+            ProcessInfo.RedirectStandardOutput = true;
+            ProcessInfo.RedirectStandardError = true;
 
-            WebResponse response = webRequest.GetResponse();
-            Stream responseStream = response.GetResponseStream();
-            StreamReader responseReader = new StreamReader(responseStream);
+            process = Process.Start(ProcessInfo);
 
-            string responseString = responseReader.ReadToEnd();
+            //Read the output
+            string output = process.StandardOutput.ReadToEnd();
+            string errors = process.StandardError.ReadToEnd();
 
+            int startIndex = output.IndexOf("{\"status\"");
+            string result = output.Substring(startIndex);
 
-            //convert to just link
-            using JsonDocument doc = JsonDocument.Parse(responseString);
+            process.WaitForExit();
+            process.Close();
+
+            //Console.WriteLine("Output: " + output);
+            //Console.WriteLine("Errors: " + errors);
+            using JsonDocument doc = JsonDocument.Parse(result);
             JsonElement root = doc.RootElement;
             string link = root.GetProperty("data").GetProperty("link").GetString();
-
-            //Console.WriteLine("Successfully Uploaded to Imgur");
             //Console.WriteLine(link);
+
             return link;
         }
     }
