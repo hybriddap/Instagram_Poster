@@ -2,6 +2,10 @@
 
 This is a little prototype I made to allow a user to upload a photo to Instagram with the click of a button.
 
+<h3>Video Showcase:<h3/>
+
+[![Watch my video](https://img.youtube.com/vi/6m90Fj_rULI/0.jpg)](https://www.youtube.com/watch?v=6m90Fj_rULI)
+
 It uses:
 1. Meta's Graph API - To publish to Instagram
 2. Imgur's API - To host the image online for Instagram's API to work
