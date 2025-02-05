@@ -37,6 +37,7 @@ namespace Instagram_Poster
         {
             //Define the argument to pass to the batch file
             string argument = imagFilePath;
+            string argument2 = Environment.GetEnvironmentVariable("imgurClientID");
 
             //Console.WriteLine(imagFilePath);
 
@@ -46,7 +47,7 @@ namespace Instagram_Poster
             ProcessStartInfo ProcessInfo;
             Process process;
 
-            ProcessInfo = new ProcessStartInfo(batScriptPath, argument);
+            ProcessInfo = new ProcessStartInfo(batScriptPath, argument+" "+ argument2);
             ProcessInfo.CreateNoWindow = true;
             ProcessInfo.UseShellExecute = false;
             ProcessInfo.RedirectStandardOutput = true;

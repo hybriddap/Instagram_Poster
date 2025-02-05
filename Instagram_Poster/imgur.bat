@@ -1,8 +1,8 @@
 :: Set the local path to the image you want to upload
 set IMAGE_PATH=%1
-echo %IMAGE_PATH%
+
 :: Set the Imgur Client-ID (replace with your actual Client-ID)
-set CLIENT_ID=dfc65d08059003e
+set CLIENT_ID=%2
 
 :: Set the API URL
 set API_URL=https://api.imgur.com/3/image
